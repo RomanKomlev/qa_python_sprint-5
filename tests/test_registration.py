@@ -31,9 +31,11 @@ class TestStellarBurgersRegistration:
         driver.find_element(*AuthRegistre.ar_email_field).send_keys('test1@yan.ru')
         driver.find_element(*AuthRegistre.ar_password_field).send_keys('124567')
 
-        driver.find_element(*AuthRegistre.ar_register_button).click()
+        register_button = driver.find_element(*AuthRegistre.ar_register_button)
+        register_button.click()
         WebDriverWait(driver, 5).until(EC.element_to_be_clickable(AuthRegistre.ar_register_button))
-        time.sleep(2)
+        WebDriverWait(driver, 5).until(EC.staleness_of(register_button))
+
         errors_messages = driver.find_elements(*AuthRegistre.ar_error_message)
 
         assert driver.current_url == Urls.url_register and len(errors_messages) == 0
